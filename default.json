@@ -1,0 +1,66 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "SpellWare organisation-wide Renovate preset.",
+  "extends": [
+    "config:recommended",
+    "group:allNonMajor",
+    ":semanticCommits",
+    "helpers:pinGitHubActionDigestsToSemver"
+  ],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["* 9-12 * * 1-5"],
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "platformAutomerge": false,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "Automerge minor, patch and digest updates once every status check has passed.",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "automerge": true
+    },
+    {
+      "description": "A minor bump on a 0.x release is allowed to be breaking under SemVer, so keep it out of the non-major batch and never automerge it.",
+      "matchCurrentVersion": "/^0\\./",
+      "matchUpdateTypes": ["minor"],
+      "groupName": null,
+      "groupSlug": null,
+      "automerge": false
+    },
+    {
+      "description": "Raise a single PR for the entire Angular toolchain instead of one per package or per Renovate monorepo preset.",
+      "matchPackageNames": [
+        "@angular/**",
+        "@angular-devkit/**",
+        "@schematics/angular",
+        "@angular-eslint/**",
+        "angular-eslint",
+        "ng-packagr"
+      ],
+      "groupName": "Angular",
+      "groupSlug": "angular"
+    },
+    {
+      "description": "Some Angular packages, such as @angular-devkit/architect, use 0.x version numbers that track the Angular release, so their minor bumps are routine and must not block the Angular PR from automerging.",
+      "matchPackageNames": [
+        "@angular/**",
+        "@angular-devkit/**",
+        "@schematics/angular",
+        "@angular-eslint/**",
+        "angular-eslint",
+        "ng-packagr"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "requires-python is a compatibility promise to users, not a dependency to keep current.",
+      "matchManagers": ["pep621"],
+      "matchDepTypes": ["requires-python"],
+      "enabled": false
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>SpellWare/renovate-config"],
+  "onboarding": false,
+  "requireConfig": "optional"
+}
